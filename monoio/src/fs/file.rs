@@ -61,7 +61,7 @@ use crate::{
 ///     Ok(())
 /// }
 /// ```
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct File {
     /// Open file descriptor
     fd: SharedFd,
