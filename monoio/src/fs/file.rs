@@ -16,6 +16,7 @@ use crate::{
     buf::{IoBuf, IoBufMut},
     driver::{op::Op, shared_fd::SharedFd},
     fs::OpenOptions,
+    io::as_fd::{AsReadFd, AsWriteFd, SharedFdWrapper},
 };
 
 /// A reference to an open file on the filesystem.
@@ -532,6 +533,20 @@ impl File {
 impl AsRawFd for File {
     fn as_raw_fd(&self) -> RawFd {
         self.fd.raw_fd()
+    }
+}
+
+impl AsReadFd for File {
+    #[inline]
+    fn as_reader_fd(&mut self) -> &SharedFdWrapper {
+        SharedFdWrapper::new(&self.fd)
+    }
+}
+
+impl AsWriteFd for File {
+    #[inline]
+    fn as_writer_fd(&mut self) -> &SharedFdWrapper {
+        SharedFdWrapper::new(&self.fd)
     }
 }
 
